@@ -1,0 +1,25 @@
+{
+  "products": [
+    {
+      "id": "lb6afcd9lw3n10kae4",
+      "name": "Áru 1",
+      "price": 1500,
+      "quantity": 97,
+      "type": "tejtermék"
+    },
+    {
+      "id": "lb6afcd9no9gwjqjsxq",
+      "name": "Áru 2",
+      "price": 2500,
+      "quantity": 15,
+      "type": "sajt"
+    },
+    {
+      "id": "lb6afcd9p1hvuf1ybu",
+      "name": "Áru 3",
+      "price": 3500,
+      "quantity": 25,
+      "type": "sajt"
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 ### get products
 get http://localhost:3000/products
 
+
 ### get product
 get http://localhost:3000/products/2
 
