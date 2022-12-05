@@ -104,68 +104,54 @@ document.getElementById("save-product").onclick = function (event) {
             id: id,
             name: name,
             price: price,
+            type: type,
             quantity: quantity
         }
+
+        fetch(state.url, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(product)
+        })
+        .then(response => response.json())
+        .then(data=>{
+            console.log(data);
+            cartRender();
+        });
+
+
+    }else if (state.event === "update") {
+        let product = {
+            id: state.currentId,
+            name: name,
+            price: price,
+            type: type,
+            quantity: quantity
+        }
+        let url = `${state.url}/${state.currentId}`
+        fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(product)
+        })
+        .then(response => response.json())
+        .then(data=>{
+            console.log(data);
+            cartRender();
+        });
+
     }
 
+    
 
     return;
 
-    //Hozzájutás az adatokhoz
-    // let name = document.getElementById("name").value;
-    // let price = +document.getElementById("price").value;
-    // let isInStock = document.getElementById("isInStock").checked;
-
-    //validálás
-    let errorList = [];
-    if (!(name)) {
-        console.log("namehiba");
-        document.getElementById("name-label").classList.add("text-danger");
-        errorList.push("Name hiba");
-    } else {
-        document.getElementById("name-label").classList.remove("text-danger");
-    }
-    if (!(price)) {
-        console.log("namehiba");
-        document.getElementById("price-label").classList.add("text-danger");
-        errorList.push("Price hiba");
-    } else {
-        document.getElementById("price-label").classList.remove("text-danger");
-    }
-
-    if (errorList.length > 0) {
-        return;
-    }
-
-    //alapban generálunk
-    // let id = idGen();
-    if (state.event === "update") {
-        //update: az kéne, amire kattintottunk
-        id = state.currentId;
-    }
-
-
-    let product = {
-        id: id,
-        name: name,
-        price: price,
-        isInStock: isInStock
-    }
-
-    if (state.event == "create") {
-        state.products.push(product);
-    }
-    else if (state.event = "update") {
-        let index = searchIndex(id);
-        state.products[index] = product;
-    }
-
-    renderProducts();
-    formHide()
-
-    //mezők ürítése
-    document.getElementById("name").value = null;
-    document.getElementById("price").value = null;
 }
 
 //Kosár megmutatása
@@ -407,34 +393,41 @@ function intoCart(id) {
 function updateProduct(id) {
     state.event = "update"
     state.currentId = id;
-    //kerüljenek bele az űrlapba a kártya datai
-    let index = searchIndex(id);
-    //beolvassuk az űrlapba
-    let name = state.products[index].name
-    let price = state.products[index].price
-    let isInStock = state.products[index].isInStock
-    let type = state.products[index].type
-    document.getElementById("name").value = name;
-    document.getElementById("price").value = price;
-    document.getElementById("type").value = type;
-    // document.getElementById("isInStock").checked = isInStock;
 
-    document.getElementById("title-update").classList.remove("d-none");
-    document.getElementById("title-new").classList.add("d-none");
-
-    formView();
-    console.log(id);
+    let url = `${state.url}/${id}`
+    fetch(url)
+    .then(response => response.json())
+    .then(data => {
+        console.log("x",data);
+        
+        let name = data.name
+        let price = data.price
+        let quantity = data.quantity
+        let type = data.type
+        document.getElementById("name").value = name;
+        document.getElementById("price").value = price;
+        document.getElementById("quantity").value = quantity;
+        document.getElementById("type").value = type;
+        // document.getElementById("isInStock").checked = isInStock;
+    
+        document.getElementById("title-update").classList.remove("d-none");
+        document.getElementById("title-new").classList.add("d-none");
+    
+        formView();
+    })
+    return;
+    
 }
 
 //Delete: Töröl gomb függvénye
 function deleteProduct(id) {
     state.event = "delete";
     let url = state.url + "/" + id
-    fetch(url,{method: "delete"})
-    .then(() => {
-        renderProducts()
+    fetch(url, { method: "delete" })
+        .then(() => {
+            renderProducts()
 
-    })
+        })
 }
 
 //Amikor betöltődött az oldal, elindul a: renderProducts függvény

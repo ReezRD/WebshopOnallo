@@ -20,6 +20,13 @@
       "price": 3500,
       "quantity": 25,
       "type": "sajt"
+    },
+    {
+      "id": "lbahiima5kjltdjdup",
+      "name": "Áru 5",
+      "price": 1500,
+      "type": "valami",
+      "quantity": "13"
     }
   ]
 }
