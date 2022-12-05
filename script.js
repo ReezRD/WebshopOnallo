@@ -58,6 +58,11 @@ function formView() {
 //űrlap elrejtése
 function formHide() {
     document.getElementById("form").classList.add("d-none")
+    //mezők ürítése
+    document.getElementById("name").value = null;
+    document.getElementById("price").value = null;
+    document.getElementById("type").value = null;
+    document.getElementById("quantity").value = null;
 }
 
 //Id generátor
@@ -98,6 +103,45 @@ document.getElementById("save-product").onclick = function (event) {
     let price = +document.getElementById("price").value;
     let type = document.getElementById("type").value;
     let quantity = document.getElementById("quantity").value;
+
+    //validálás
+    let errorList = [];
+    if (!(name)) {
+        console.log("namehiba");
+        document.getElementById("name-label").classList.add("text-danger");
+        errorList.push("Name hiba");
+    } else {
+        document.getElementById("name-label").classList.remove("text-danger");
+    }
+    if (!(price)) {
+        console.log("pricehiba");
+        document.getElementById("price-label").classList.add("text-danger");
+        errorList.push("Price hiba");
+    } else {
+        document.getElementById("price-label").classList.remove("text-danger");
+    }
+    if (!(type)) {
+        console.log("typehiba");
+        document.getElementById("type-label").classList.add("text-danger");
+        errorList.push("Type hiba");
+    } else {
+        document.getElementById("type-label").classList.remove("text-danger");
+    }
+    if (!(quantity)) {
+        console.log("quantityhiba");
+        document.getElementById("quantity-label").classList.add("text-danger");
+        errorList.push("quantity hiba");
+    } else {
+        document.getElementById("quantity-label").classList.remove("text-danger");
+    }
+
+    if (errorList.length > 0) {
+        return;
+    }
+
+
+
+
     let id = idGen();
     if (state.event === "create") {
         let product = {
@@ -120,6 +164,7 @@ document.getElementById("save-product").onclick = function (event) {
         .then(data=>{
             console.log(data);
             cartRender();
+            formHide()
         });
 
 
@@ -144,6 +189,7 @@ document.getElementById("save-product").onclick = function (event) {
         .then(data=>{
             console.log(data);
             cartRender();
+            formHide()
         });
 
     }
